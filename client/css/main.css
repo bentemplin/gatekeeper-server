@@ -1,3 +1,7 @@
+img {
+    max-height: 75px;
+}
+
 .header {
     padding-top: 30px;
     width: 90%;
