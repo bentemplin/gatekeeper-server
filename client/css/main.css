@@ -37,3 +37,11 @@
 .template {
     display: none;
 }
+
+.pagination-cont {
+    text-align: center;
+}
+
+.tennants-container {
+    display: none;
+}

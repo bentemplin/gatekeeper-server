@@ -16,36 +16,141 @@
 
 <body>
     <div class="col-xs-12 header">
-        <div class="col-xs-10">
-            <h1 class="header-text">Dashboard</h1>
+        <div class="col-xs-12">
+            <h1 class="header-text">{{name}}'s Dashboard</h1>
+        </div>
+        <div class="col-xs-12 pagination-cont">
+            <ul class="pagination">
+                <li class="active"> <a class="page" data-elm="occupants-container" href="">Current Occupants</a></li>
+                <li> <a class="page" data-elm="tennants-container" href="">Tennants</a></li>
+            </ul>
         </div>
     </div>
     <div class="container">
-        <table class="table table-striped">
-            <thead>
+        <div class="cont-toggle tennants-container">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Room number</th>
+                        <th>Public Key</th>
+                        <th>Photo</th>
+                    </tr>
+                </thead>
+                <tbody class="tennant-body">
+                </tbody>
+                {{#each residents}}
                 <tr>
-                    <th>Name</th>
-                    <th>Room number</th>
-                    <th>Public Key</th>
-                    <th>Photo</th>
+                    <td>{{this.name}}</td>
+                    <td>{{this.room}}</td>
+                    <td>{{this.publicKey}}</td>
+                    <td><img src="{{this.photoURL}}" alt="Photo Missing"></td>
                 </tr>
-            </thead>
-            <tbody class="tennant-body">
-            </tbody>
-            {{#each residents}}
-            <tr>
-                <td>{{this.name}}</td>
-                <td>{{this.room}}</td>
-                <td>{{this.publicKey}}</td>
-                <td><img src="{{this.photoURL}}" alt="Photo Missing"></td>
-            </tr>
-            {{/each}}
-        </table>
+                {{/each}}
+
+            </table>
+
+            <div data-toggle="modal" data-target="#myModal" class="btn btn-default">Add tennant</div>
+        </div>
+
+        <div class="cont-toggle occupants-container">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Public Key</th>
+                        <th>Photo</th>
+                    </tr>
+                </thead>
+                <tbody class="tennant-body">
+                </tbody>
+                {{#each occupants}}
+                <tr>
+                    <td>{{this.name}}</td>
+                    <td>{{this.publicKey}}</td>
+                    <td><img src="{{this.photoURL}}" alt="Photo Missing"></td>
+                </tr>
+                {{/each}}
+
+            </table>
+        </div>
     </div>
+
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div type="button" class="close" data-dismiss="modal">&times;</div>
+                    <h4 class="modal-title">New tennant:</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="name">Name:</label>
+                            <div class="col-sm-9">
+                                <input type="input" class="form-control" id="name" placeholder="Enter name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="room">Room:</label>
+                            <div class="col-sm-9">
+                                <input type="input" class="form-control" id="room" placeholder="Enter room">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="img">Image URL:</label>
+                            <div class="col-sm-9"> 
+                                <input type="input" class="form-control" id="img" placeholder="Enter image url">
+                            </div>
+                        </div>
+                        <div class="form-group"> 
+                            <label class="control-label col-sm-3" for="key">Public Key:</label>
+                            <div class="col-sm-9"> 
+                                <input type="input" class="form-control" id="key" placeholder="Enter public key">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div type="button" class="add-button btn btn-default" data-dismiss="modal">Add</div>
+                </div>
+            </div>
+        </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        var $name, $room, $url, $key;
+        var $addButton;
 
+        var $tennShowButton, $occShowButton;
+
+        $(function() {
+            $name = $("#name");
+            $room = $("#room");
+            $url = $("#img");
+            $key = $("#key");
+            $addButton = $(".add-button");
+
+            $(".page").on("click", function(e) {
+                $(".page").parent().removeClass("active");
+                $(this).parent().addClass("active");
+                e.preventDefault();
+                $(".cont-toggle").hide();
+                $("." + $(this).data("elm")).show();
+            });
+
+            $addButton.on("click", function() {
+                console.log($name.val());
+                console.log($room.val());
+                console.log($url.val());
+                console.log($key.val());
+
+                location.reload();
+            });
+
+        });
+    </script>
 </body>
 
 </html>
