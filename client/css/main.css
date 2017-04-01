@@ -29,6 +29,10 @@ img {
     padding-left: 5px;
 }
 
+.form-horizontal {
+    margin-top: 50px;
+}
+
 .login-button {
     vertical-align: middle;
     display: block;
