@@ -373,6 +373,50 @@ app.route("/signup").get(async (request, response) => {
 }).post(postParser, async (request, response) => {
 
 });
+app.route("/upload").post(postParser, async (request, response) => {
+    let {name, pictureURL, publicKey, signature}: {
+        name: string | undefined;
+        pictureURL: string | undefined;
+        publicKey: string | undefined;
+        signature: string | undefined;
+    } = request.body;
+    if (!name || !pictureURL || !publicKey || !signature) {
+        response.json({
+            "error": "Missing name, picture URL, public key, or payload signature"
+        });
+        return;
+    }
+    if (!secp256k1.publicKeyVerify(new Buffer(publicKey, "hex"))) {
+        response.json({
+            "error": "Invalid public key"
+        });
+        return;
+    }
+    let signatureParsed = secp256k1.signatureImport(new Buffer(signature, "hex"));
+    let signatureValid = secp256k1.verify(crypto.createHash("sha256").update(name + pictureURL + publicKey).digest(), signatureParsed, new Buffer(publicKey, "hex"));
+    if (!signatureValid) {
+        response.json({
+            "error": "Invalid signature"
+        });
+        return;
+    }
+    try {
+        await new User({
+            name,
+            pictureURL,
+            publicKey
+        }).save();
+        response.json({
+            "success": true
+        });
+    }
+    catch (err) {
+        console.error(err);
+        response.status(500).json({
+            "error": "An error occurred while saving new user"
+        });
+    }
+});
 
 mainRouter.route("/").get(/*isAdmin, */async (request, response) => {
     let building = response.locals.building as IBuilding;
