@@ -45,6 +45,7 @@ interface IUser extends IDocument {
     name: string;
     buildingSlug: string;
     room: string;
+    photoURL: string;
     publicKey: string;
 }
 type IUserMongoose = IUser & mongoose.Document;
@@ -58,6 +59,7 @@ const User = mongoose.model<IUserMongoose>("User", new mongoose.Schema({
         unique: true
     },
     room: String,
+    photoURL: String,
     publicKey: String
 }));
 
