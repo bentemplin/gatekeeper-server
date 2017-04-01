@@ -224,12 +224,42 @@ async function isAdmin(request: express.Request, response: express.Response, nex
 ///
 let apiRouter = express.Router();
 
-apiRouter.route("/addresident").post(isAdmin, async (request, response) => {
-
+apiRouter.route("/add_resident").post(/*isAdmin, */postParser, async (request, response) => {
+    let building = response.locals.building as IBuilding;
+    let {name, room, photoURL, publicKey}: {
+        name: string | undefined;
+        room: string | undefined;
+        photoURL: string | undefined;
+        publicKey: string | undefined
+    } = request.body;
+    if (!name || !room || !photoURL || !publicKey) {
+        response.status(400).json({
+            "error": "Missing resident's name, room, photo URL, or public key"
+        });
+        return;
+    }
+    try {
+        await new User({
+            name,
+            buildingSlug: building.nameSlug,
+            room,
+            photoURL,
+            publicKey
+        }).save();
+        response.json({
+            "success": true
+        });
+    }
+    catch (err) {
+        console.error(err);
+        response.status(500).json({
+            "error": "An error occurred while adding resident"
+        });
+    }
 });
 
 apiRouter.route("/access").post(async (request, response) => {
-    
+
 });
 
 ///
@@ -259,7 +289,7 @@ app.route("/login").get(async (request, response) => {
     let loginTemplate = Handlebars.compile(await readFileAsync(path.resolve(__dirname, "client/login.html")));
     response.send(loginTemplate({}));
 }).post(postParser, async (request, response) => {
-    let buildingName = request.body.username as string;
+    let buildingName = request.body.building as string;
     let building = await Building.findOne({ "name": buildingName });
     if (!building) {
         response.status(401).json({
@@ -305,10 +335,13 @@ app.route("/signup").get(async (request, response) => {
 
 });
 
-mainRouter.route("/").get(async (request, response) => {
+mainRouter.route("/").get(/*isAdmin, */async (request, response) => {
     let building = response.locals.building as IBuilding;
     let dashboardTemplate = Handlebars.compile(await readFileAsync(path.resolve(__dirname, "client/dashboard.html")));
-    response.send(dashboardTemplate({ residents: building.access.residents }));
+    response.send(dashboardTemplate({
+        name: building.name,
+        residents: await User.find({ "buildingSlug": building.nameSlug })
+    }));
 });
 
 mainRouter.use("/api", apiRouter);
