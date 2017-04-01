@@ -25,7 +25,7 @@
     </div>
     <div class="col-xs-12 pagination-cont">
         <div class="btn-group">
-            <div data-elm="requests-container" class="btn btn-default page">Requests</div>
+            <div data-elm="requests-container" class="active btn btn-default page">Requests</div>
             <div data-elm="occupants-container" class="btn btn-default page">Current Occupants</div>
             <div data-elm="tennants-container" class="btn btn-default page">Tennants</div>
         </ul>
@@ -119,9 +119,10 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <div type="button" class="close" data-dismiss="modal">&times;</div>
-                    <h4 class="modal-title">New tennant:</h4>
+                    <h4 class="modal-title">Add new tennant to building:</h4>
                 </div>
                 <div class="modal-body">
+                    <h4>Add a user by their name.</h4>
                     <div class="form-horizontal">
                         <div class="form-group">
                             <label class="control-label col-sm-3" for="name">Name:</label>
@@ -130,27 +131,15 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-3" for="room">Room:</label>
+                            <label class="control-label col-sm-3" for="room">Room number:</label>
                             <div class="col-sm-9">
-                                <input type="input" class="form-control" id="room" placeholder="Enter room">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-3" for="img">Image URL:</label>
-                            <div class="col-sm-9"> 
-                                <input type="input" class="form-control" id="img" placeholder="Enter image url">
-                            </div>
-                        </div>
-                        <div class="form-group"> 
-                            <label class="control-label col-sm-3" for="key">Public Key:</label>
-                            <div class="col-sm-9"> 
-                                <input type="input" class="form-control" id="key" placeholder="Enter public key">
+                                <input type="input" class="form-control" id="room" placeholder="Enter room number">
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <div type="button" class="add-button btn btn-default" data-dismiss="modal">Add</div>
+                    <div style="text-align: right; width: 100%;">
+                        <div type="button" class="add-button btn btn-default" data-dismiss="modal">Submit</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -185,10 +174,8 @@
             $addButton.on("click", function() {
                 console.log($name.val());
                 console.log($room.val());
-                console.log($url.val());
-                console.log($key.val());
 
-                location.reload();
+                //location.reload();
 
                 // RYAN: add a new tennant here
             });

@@ -31,7 +31,7 @@ img {
 }
 
 .form-horizontal {
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
 .login-button {
@@ -53,6 +53,17 @@ img {
 
 .signup-button {
 
+}
+
+.modal-body>h4 {
+    text-align: left;
+}
+
+.add-button {
+    display: inline-block;
+    position: relative;
+    margin: 0 0;
+    text-align: left;
 }
 
 .error {
