@@ -258,7 +258,46 @@ apiRouter.route("/add_resident").post(/*isAdmin, */postParser, async (request, r
     }
 });
 
-apiRouter.route("/access").post(async (request, response) => {
+apiRouter.route("/add_user_to_building").post(/*isAdmin,*/ postParser, async (request, response) => {
+    let building = response.locals.building as IBuildingMongoose;
+    let {name, room}: {
+        name: string | undefined;
+        room: string | undefined
+    } = request.body;
+    if (!name || !room) {
+        response.status(400).json({
+            "error": "Missing user's name or room number"
+        });
+        return;
+    }
+    let user = await User.findOne({ name });
+    if (!user) {
+        response.status(400).json({
+            "error": "Invalid user name"
+        });
+        return;
+    }
+    user.room = room;
+    user.buildingSlug = building.nameSlug;
+    try {
+        building.access.residents.push({
+            "id": user._id.toString()
+        });
+        await building.save();
+        await user.save();
+        response.json({
+            "success": true
+        });
+    }
+    catch (err) {
+        console.error(err);
+        response.status(500).json({
+            "error": "An error occurred while adding user to building"
+        });
+    }
+});
+
+apiRouter.route("/request_access").post(postParser, async (request, response) => {
 
 });
 
