@@ -1,0 +1,39 @@
+.header {
+    padding-top: 10px;
+    width: 90%;
+    position: relative;
+    left: 5%;
+}
+
+.header-text {
+    font-size: 4em;
+}
+
+.header-subtext {
+    padding-left: 5px;
+}
+
+.login-button {
+    vertical-align: middle;
+    display: block;
+    width: 100%;
+}
+
+.login-button > span {
+    position: relative;
+    display: block;
+    text-align: center;
+}
+
+.signup-button {
+
+}
+
+.error {
+    display: none;
+    text-align: center;
+}
+
+.template {
+    display: none;
+}

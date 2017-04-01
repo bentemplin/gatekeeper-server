@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gate Keeper</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Carl Schriever">
+    <meta name="description" content="Gate Keeper's landing page">
+    <meta name="robots" content="index, follow">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <!--<link rel="shortcut icon" href="/favicon.ico"/>-->
+</head>
+
+<body>
+    <div class="col-xs-12 header">
+        <div class="col-xs-10">
+            <span class="header-text">Gate Keeper</span><span class="header-subtext">a smarter solution to restricted access management</span>
+        </div>
+        <div class="col-xs-1">
+            <a class="login-button" href="/login"><span>Login</span></a>
+        </div>
+        <div class="col-xs-1">
+            <a href="/signup">
+                <div class="signup-button btn btn-primary">Sign up</div>
+            </a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="col-xs-12 goals">
+            <h1>Our Goals</h1>
+            <div class="goal col-xs-6">
+                <h3>Goal 1</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat quos, enim tempore. Quasi ipsam voluptates
+                    excepturi minus delectus, dicta aliquam ratione quia nisi cupiditate, esse odit? Repellendus nemo, voluptatibus
+                    quis!</p>
+            </div>
+            <div class="goal col-xs-6">
+                <h3>Goal 2</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam quos atque culpa, quo magnam. Deleniti voluptas
+                    fugit, asperiores ea esse nemo, minus odit sequi obcaecati odio dolores delectus vel reprehenderit.</p>
+            </div>
+            <div class="goal col-xs-6">
+                <h3>Goal 3</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur molestiae quas soluta eos aut! Saepe
+                    similique dolores, harum ut dolorum fugit nemo, corporis excepturi iste sequi, ipsam magni perferendis
+                    veritatis.</p>
+            </div>
+            <div class="goal col-xs-6">
+                <h3>Goal 4</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, eveniet sit ab modi, cum harum exercitationem,
+                    eius veniam ex repellendus non officiis quisquam consequatur. Quis enim a tempore totam, quos?</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script>
+        var $header;
+        var $signup, $login;
+
+        $(function () {
+            $header = $(".header")
+            $signup = $(".signup-button");
+            $login = $(".login-button");
+            $login.text = $login.children("span");
+
+            resizeStuff();
+        });
+
+        function resizeStuff() {
+            $login.css("height", $header.height() + "px");
+            $login.text.css("padding-top", ($header.height() / 2 - $login.text.height() / 2 + 6) + "px")
+            $login.text.css("padding-bottom", ($header.height() / 2 - $login.text.height() / 2 + 6) + "px")
+            $signup.css("margin-top", ($header.height() / 2 - $signup.height() / 2) + "px");
+        }
+
+    </script>
+
+</body>
+
+</html>
