@@ -23,6 +23,7 @@ img {
 
 .header-text {
     font-size: 4em;
+    color:#FFF;
 }
 
 .header-subtext {
@@ -65,6 +66,10 @@ img {
 
 .pagination-cont {
     text-align: center;
+}
+
+.btn-group {
+    padding: 30px;
 }
 
 .tennants-container, .occupants-container {

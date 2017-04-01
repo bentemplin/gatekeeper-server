@@ -10,22 +10,25 @@
     <meta name="description" content="Gate Keeper's admin dashboard">
     <meta name="robots" content="index, follow">
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/united/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <!--<link rel="shortcut icon" href="/favicon.ico"/>-->
 </head>
 
 <body>
-    <div class="col-xs-12 header">
-        <div class="col-xs-12">
-            <h1 class="header-text">{{name}} Dashboard</h1>
+    <div class="head-cont container navbar-default">
+        <div class="col-xs-12 header">
+            <div class="head-left col-xs-12">
+                <h1 class="header-text primary">{{name}} Dashboard</h1>
+            </div>
         </div>
-        <div class="col-xs-12 pagination-cont">
-            <ul class="pagination">
-                <li class="active"> <a class="page" data-elm="requests-container" href="">Requests</a></li>
-                <li> <a class="page" data-elm="occupants-container" href="">Current Occupants</a></li>
-                <li> <a class="page" data-elm="tennants-container" href="">Tennants</a></li>
-            </ul>
-        </div>
+    </div>
+    <div class="col-xs-12 pagination-cont">
+        <div class="btn-group">
+            <div data-elm="requests-container" class="btn btn-default page">Requests</div>
+            <div data-elm="occupants-container" class="btn btn-default page">Current Occupants</div>
+            <div data-elm="tennants-container" class="btn btn-default page">Tennants</div>
+        </ul>
     </div>
     <div class="container">
 
@@ -49,7 +52,7 @@
                     <td><img src="{{this.photoURL}}" alt="Photo Missing"></td>
                     <td>{{this.reason}}</td>
                     <td>
-                        <div data-key="{{this.publicKey}}" class="grant-button btn btn-primary">Grant</div><br>
+                        <div data-key="{{this.publicKey}}" class="grant-button btn btn-success">Grant</div><br>
                         <div data-key="{{this.publicKey}}" class="deny-button btn btn-danger">Deny</div>
                     </td>
                 </tr>
@@ -173,9 +176,8 @@
             $addButton = $(".add-button");
 
             $(".page").on("click", function(e) {
-                $(".page").parent().removeClass("active");
-                $(this).parent().addClass("active");
-                e.preventDefault();
+                $(".page").removeClass("active");
+                $(this).addClass("active");
                 $(".cont-toggle").hide();
                 $("." + $(this).data("elm")).show();
             });
