@@ -9,6 +9,8 @@ import * as session from "express-session";
 import * as connectMongo from "connect-mongo";
 const MongoStore = connectMongo(session);
 import * as slug from "slug";
+import * as bodyParser from "body-parser";
+const postParser = bodyParser.urlencoded();
 
 export let app = express();
 app.use(compression());
@@ -215,6 +217,41 @@ async function isAdmin(request: express.Request, response: express.Response, nex
 /// API
 ///
 let apiRouter = express.Router();
+
+apiRouter.route("/login").post(postParser, async (request, response) => {
+    let building = response.locals.building as IBuildingMongoose;
+    let username = request.body.username as string;
+    let password = request.body.password as string;
+    if (!username || !password) {
+        response.status(400).json({
+            "error": "Missing username or password"
+        });
+        return;
+    }
+    let salt = new Buffer(building.adminAccount.salt, "hex");
+    let hashAttempt = await getHashForPassword(password, salt);
+    if (hashAttempt.toString("hex") !== building.adminAccount.hash) {
+        response.status(401).json({
+            "error": "Invalid username or password"
+        });
+        return;
+    }
+    let sessionKey = crypto.randomBytes(32).toString("hex");
+    request.session!.sessionKey = sessionKey;
+    building.adminAccount.sessionKeys.push(sessionKey);
+    try {
+        await building.save();
+        response.json({
+            "success": true
+        });
+    }
+    catch (err) {
+        console.error(err);
+        response.status(500).json({
+            "error": "An error occurred while logging in"
+        });
+    }
+});
 
 apiRouter.route("/addresident").post(isAdmin, async (request, response) => {
 
