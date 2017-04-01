@@ -1,26 +1,119 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="UTF-8">
-    <title>Sign up!</title>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="Carl Schriever">
-    <meta name="description" content="Gate Keeper's sign up page">
-    <meta name="robots" content="index, follow">
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/united/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <!--<link rel="shortcut icon" href="/favicon.ico"/>-->
 </head>
 
 <body>
+    <div class="head-cont container navbar-default">
+        <div class="col-xs-12 header">
+            <div class="head-left col-xs-12">
+                <span class="header-text primary">Gate Keeper</span><span class="header-subtext">a smarter solution to restricted access management</span>
+            </div>
+        </div>
+    </div>
     <div class="container">
-
+        <h1>Create new admin account:</h1>
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-xs-2" for="name">Name:</label>
+                <div class="col-xs-10">
+                    <input type="input" class="form-control" id="name" placeholder="Enter building's name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-xs-2" for="pwd">Password:</label>
+                <div class="col-xs-10">
+                    <input type="password" class="form-control" id="pwd" placeholder="Enter password">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-xs-2" for="img">Image:</label>
+                <div class="col-xs-10">
+                    <input type="input" class="form-control" id="img" placeholder="Enter image URL">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-xs-2" for="comment">Description:</label>
+                <div class="col-xs-10">
+                    <textarea class="col-xs-10 form-control" rows="5" id="comment" placeholder="Description..."></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <h4>Building Location:</h4>
+                <label class="control-label col-xs-2" for="lat">Latitude:</label>
+                <div class="col-xs-4">
+                    <input type="input" class="form-control" id="lat" placeholder="Enter latitude">
+                </div>
+                <label class="control-label col-xs-2" for="long">Longitude:</label>
+                <div class="col-xs-4">
+                    <input type="input" class="form-control" id="long" placeholder="Enter longitude">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-10">
+                    <button class="btn btn-default">Submit</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-10 col-xs-offset-2 error alert alert-danger">
+            <h2>Sorry an error has occured try again.</h2>
+        </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script>
+        var $userField, $passField, $image, $description, $lat, $long;
+        var $button;
+        var $error;
+
+        $(function () {
+            $userField = $("#name");
+            $passField = $("#pwd");
+            $image = $("#img");
+            $description = $("#comment");
+            $lat = $("#lat");
+            $long = $("#long");
+            $button = $(".btn");
+            $error = $(".error");
+
+            $button.on("click", function (e) {
+                console.log($userField.val());
+                console.log($passField.val());
+                console.log($image.val());
+                console.log($description.val());
+                console.log($lat.val());
+                console.log($long.val());
+
+                submitLogIn($userField.val(), $passField.val(), $image.val(),
+                    $description.val(), $lat.val(), $long.val());
+            });
+        });
+
+        function submitLogIn(username, pwd) {
+
+            $.ajax("", {
+
+            });
+
+            var success = true;
+
+            if (success) {
+                //window.location.href = "/dashboard";
+            } else {
+                displayError();
+            }
+        }
+
+        function displayError() {
+            $error.slideDown();
+            setTimeout(function () {
+                $error.slideUp();
+            }, 5000);
+        }
+    </script>
 
 </body>
 
