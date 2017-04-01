@@ -1,3 +1,4 @@
+import * as path from "path";
 import * as fs from "fs";
 import * as crypto from "crypto";
 const secp256k1 = require("secp256k1");
@@ -10,7 +11,10 @@ import * as connectMongo from "connect-mongo";
 const MongoStore = connectMongo(session);
 import * as slug from "slug";
 import * as bodyParser from "body-parser";
-const postParser = bodyParser.urlencoded();
+const postParser = bodyParser.urlencoded({
+    extended: false
+});
+import * as Handlebars from "handlebars";
 
 export let app = express();
 app.use(compression());
@@ -232,12 +236,28 @@ apiRouter.route("/access").post(async (request, response) => {
 /// User facing routes
 ///
 let mainRouter = express.Router();
+/*let [
+	indexTemplate,
+	dashboardTemplate,
+	loginTemplate,
+    signupTemplate
+] = [
+	"index.html",
+	"dashboard.html",
+	"login.html",
+    "signup.html"
+].map(file => {
+	let data = fs.readFileSync(path.resolve(__dirname, "client", file), "utf8");
+	return Handlebars.compile(data);
+});*/
 
-app.route("/").get((request, response) => {
-    response.send("Index page");
+app.route("/").get(async (request, response) => {
+    let indexTemplate = Handlebars.compile(await readFileAsync(path.resolve(__dirname, "client/index.html")));
+    response.send(indexTemplate({}));
 });
-app.route("/login").get((request, response) => {
-    response.send("Login page");
+app.route("/login").get(async (request, response) => {
+    let loginTemplate = Handlebars.compile(await readFileAsync(path.resolve(__dirname, "client/login.html")));
+    response.send(loginTemplate({}));
 }).post(postParser, async (request, response) => {
     let buildingName = request.body.username as string;
     let building = await Building.findOne({ "name": buildingName });
@@ -278,12 +298,21 @@ app.route("/login").get((request, response) => {
         });
     }
 });
+app.route("/signup").get(async (request, response) => {
+    let signupTemplate = Handlebars.compile(await readFileAsync(path.resolve(__dirname, "client/signup.html")));
+    response.send(signupTemplate({}));
+}).post(postParser, async (request, response) => {
 
-mainRouter.route("/").get((request, response) => {
-    response.send("Hopkins");
+});
+
+mainRouter.route("/").get(async (request, response) => {
+    let building = response.locals.building as IBuilding;
+    let dashboardTemplate = Handlebars.compile(await readFileAsync(path.resolve(__dirname, "client/dashboard.html")));
+    response.send(dashboardTemplate({ residents: building.access.residents }));
 });
 
 mainRouter.use("/api", apiRouter);
+app.use("/css", serveStatic("client/css"));
 app.use("/:building", loadBuilding, mainRouter);
 
 const PORT = 3000;

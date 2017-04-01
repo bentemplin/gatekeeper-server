@@ -13,19 +13,19 @@
     padding-left: 5px;
 }
 
-.login-butt {
+.login-button {
     vertical-align: middle;
     display: block;
     width: 100%;
 }
 
-.login-butt>span {
+.login-button > span {
     position: relative;
     display: block;
     text-align: center;
 }
 
-.signup-butt {
+.signup-button {
 
 }
 
