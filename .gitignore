@@ -39,3 +39,5 @@ jspm_packages
 server\.js
 
 server\.js\.map
+
+keys\.json
