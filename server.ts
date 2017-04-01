@@ -72,7 +72,11 @@ interface IBuilding extends IDocument {
     nameSlug: string;
     description: string;
     pictureURL: string;
-    location: string;
+    location: {
+        address: string;
+        latitude: number;
+        longitude: number;   
+    };
 
     access: {
         residents: {
@@ -104,7 +108,11 @@ const Building = mongoose.model<IBuildingMongoose>("Building", new mongoose.Sche
     },
     description: String,
     pictureURL: String,
-    location: String,
+    location: {
+        address: String,
+        latitude: Number,
+        longitude: Number
+    },
 
     access: {
         residents: [{
@@ -142,7 +150,11 @@ async function setDefault() {
             nameSlug: slug(buildingName).toLowerCase(),
             description: "The best dormitory at Georgia Tech",
             pictureURL: "http://housing.gatech.edu/halls/Building%20Main%20Picture/094Main.jpg",
-            location: "115 Bobby Dodd Way, Atlanta, GA 30313",
+            location: {
+                address: "115 Bobby Dodd Way, Atlanta, GA 30313",
+                latitude: 33.774081,
+                longitude: -84.391283
+            },
 
             access: {
                 residents: [],
