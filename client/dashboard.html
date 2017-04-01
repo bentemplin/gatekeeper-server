@@ -21,12 +21,47 @@
         </div>
         <div class="col-xs-12 pagination-cont">
             <ul class="pagination">
-                <li class="active"> <a class="page" data-elm="occupants-container" href="">Current Occupants</a></li>
+                <li class="active"> <a class="page" data-elm="requests-container" href="">Requests</a></li>
+                <li> <a class="page" data-elm="occupants-container" href="">Current Occupants</a></li>
                 <li> <a class="page" data-elm="tennants-container" href="">Tennants</a></li>
             </ul>
         </div>
     </div>
     <div class="container">
+
+        <div class="cont-toggle requests-container">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Public Key</th>
+                        <th>Photo</th>
+                        <th>Reason of visit</th>
+                        <th>Access</th>
+                    </tr>
+                </thead>
+                <tbody class="tennant-body">
+                </tbody>
+                {{#each requests}}
+                <tr>
+                    <td>{{this.name}}</td>
+                    <td>{{this.publicKey}}</td>
+                    <td><img src="{{this.photoURL}}" alt="Photo Missing"></td>
+                    <td>{{this.reason}}</td>
+                    <td>
+                        <div data-key="{{this.publicKey}}" class="grant-button btn btn-primary">Grant</div><br>
+                        <div data-key="{{this.publicKey}}" class="deny-button btn btn-danger">Deny</div>
+                    </td>
+                </tr>
+                {{/each}}
+
+            </table>
+
+            <div class="col-xs-12 error alert alert-danger">
+                <h2>Sorry an error has occured try again.</h2>
+            </div>
+        </div>
+
         <div class="cont-toggle tennants-container">
             <table class="table table-striped">
                 <thead>
@@ -120,12 +155,17 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
+
+        var $error;
+
         var $name, $room, $url, $key;
         var $addButton;
 
         var $tennShowButton, $occShowButton;
 
         $(function() {
+            $error = $(".error");
+
             $name = $("#name");
             $room = $("#room");
             $url = $("#img");
@@ -147,9 +187,47 @@
                 console.log($key.val());
 
                 location.reload();
+
+                // RYAN: add a new tennant here
+            });
+
+            $('.grant-button').on("click", function() {
+                console.log($(this).data("key"));
+
+                // RYAN: grant access
+                
+                //On success
+                
+                $(this).parents("tr").remove();
+
+                // On fail
+                
+                displayError("Message goes here");
+            });
+
+            $('.deny-button').on("click", function() {
+                console.log($(this).data("key"));
+
+                // RYAN: deny access
+
+                // On success
+                
+                $(this).parents("tr").remove();
+
+                // On fail
+                
+                displayError("Message goes here");
             });
 
         });
+
+        function displayError(message) {
+            $error.html(message);
+            $error.slideDown();
+            setTimeout(function () {
+                $error.slideUp();
+            }, 5000);
+        }
     </script>
 </body>
 

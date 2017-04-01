@@ -42,6 +42,15 @@
     text-align: center;
 }
 
-.tennants-container {
+.tennants-container, .occupants-container {
     display: none;
+}
+
+.grant-button {
+    margin-bottom: 5px;
+    width: 80px;
+}
+
+.deny-button {
+    width: 80px;
 }
