@@ -28,3 +28,12 @@
 .signup-butt {
 
 }
+
+.error {
+    display: none;
+    text-align: center;
+}
+
+.template {
+    display: none;
+}
