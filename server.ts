@@ -221,12 +221,13 @@ async function loadBuilding(request: express.Request, response: express.Response
     }
 }
 async function isAdmin(request: express.Request, response: express.Response, next: express.NextFunction) {
-    let sessionKey = request.session!.key;
+    let {sessionKey} = request.session!;
     let buildingForAdmin = await Building.findOne({ "adminAccount.sessionKeys": sessionKey });
     if (!buildingForAdmin || buildingForAdmin.nameSlug !== (response.locals.building as IBuilding).nameSlug) {
         response.status(401).json({
             "error": "You are not authorized to access that endpoint"
         });
+        return;
     }
     next();
 }
@@ -309,7 +310,7 @@ apiRouter.route("/add_user_to_building").post(isAdmin, postParser, async (reques
     }
 });
 
-apiRouter.route("/request_access").post(postParser, async (request, response) => {
+apiRouter.route("/tap").post(postParser, async (request, response) => {
 
 });
 
@@ -364,6 +365,7 @@ app.route("/login").get(async (request, response) => {
     }
     let sessionKey = crypto.randomBytes(32).toString("hex");
     request.session!.sessionKey = sessionKey;
+    request.session!.save(() => {});
     building.adminAccount.sessionKeys.push(sessionKey);
     try {
         await building.save();
