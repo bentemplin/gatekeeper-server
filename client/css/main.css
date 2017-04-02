@@ -95,3 +95,10 @@ img {
 .deny-button {
     width: 80px;
 }
+
+.bottom-image {
+    position: fixed;
+    top 30vh;
+    width:110vh;
+    height:55vh;
+}

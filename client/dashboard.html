@@ -223,13 +223,15 @@
         });
 
         function submitLogIn(name, room) {
-            $.ajax("/add_user_to_building", {
+            var building = window.location.pathname.split('/')[1];
+            $.ajax("/" + building + "/add_user_to_building", {
                 type: "POST",
-                data: {name: name, room:room},
+                data: {name: name, room: room},
                 success: function(res) {
                     location.reload();
                 },
                 error: function(res) {
+                    console.log(res);
                     displayError(JSON.parse(res.responseText).error);
                 }
             });
