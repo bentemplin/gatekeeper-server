@@ -368,7 +368,8 @@ app.route("/login").get(async (request, response) => {
     try {
         await building.save();
         response.json({
-            "success": true
+            "success": true,
+            "redirect": "/" + building.nameSlug
         });
         // Client should redirect to /buildingSlug
     }
