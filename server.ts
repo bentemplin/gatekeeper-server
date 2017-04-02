@@ -280,6 +280,38 @@ apiRouter.route("/tap").post(postParser, async (request, response) => {
     
 });
 
+apiRouter.route("/request").post(postParser, async (request, response) => {
+    let building = response.locals.building as IBuildingMongoose;
+    let {name}: {name: string | undefined} = request.body;
+    if (!name) {
+        response.status(400).json({
+            "error": "Missing name"
+        });
+        return;
+    }
+    let user = await User.findOne({ name });
+    if (!user ) {
+        response.status(400).json({
+            "error": "Invalid name"
+        });
+    }
+    building.access.guests.push({
+        "id": user._id,
+        "expiration": new Date(Date.now() + 1000 * 60 * 15)
+    });
+    try {
+        await building.save();
+        response.json({
+            "success": true
+        });
+    }
+    catch (err) {
+        console.error(err);
+        response.status(500).json({
+            "error": "An error occurred while saving the access request"
+        });
+    }
+});
 ///
 /// User facing routes
 ///
@@ -483,7 +515,8 @@ mainRouter.route("/").get(isAdmin, async (request, response) => {
     let dashboardTemplate = Handlebars.compile(await readFileAsync(path.resolve(__dirname, "client/dashboard.html")));
     response.send(dashboardTemplate({
         name: building.name,
-        residents: await User.find({ "buildingSlug": building.nameSlug })
+        residents: await User.find({ "buildingSlug": building.nameSlug }),
+        requests: await Promise.all(building.access.guests.map(data => User.findById(data.id)))
     }));
 });
 
