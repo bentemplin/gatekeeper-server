@@ -18,8 +18,13 @@
 <body>
     <div class="head-cont container navbar-default">
         <div class="col-xs-12 header">
-            <div class="head-left col-xs-12">
+            <div class="head-left col-xs-11">
                 <h1 class="header-text primary">{{name}} Dashboard</h1>
+            </div>
+            <div class="head-right col-xs-1">
+                <a href="/signup">
+                    <div class="logout-button btn btn-success">Log out</div>
+                </a>
             </div>
         </div>
     </div>
@@ -148,6 +153,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
 
+        var $logout, $header;
+
         var $error;
 
         var $name, $room, $url, $key;
@@ -156,6 +163,9 @@
         var $tennShowButton, $occShowButton;
 
         $(function() {
+            $header = $(".header")
+            $logout = $(".logout-button");
+
             $error = $(".error");
 
             $name = $("#name");
@@ -208,7 +218,17 @@
                 displayError("Message goes here");
             });
 
+            $logout.on("click", function() {
+                    window.location.href = "/logout";
+            });
+
+            resizeStuff();
+
         });
+
+        function resizeStuff() {
+            $logout.css("margin-top", ($header.height() / 2 - $logout.height() / 2) + "px");
+        }
 
         function displayError(message) {
             $error.html(message);
