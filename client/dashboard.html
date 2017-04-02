@@ -22,7 +22,7 @@
                 <h1 class="header-text primary">{{name}} Dashboard</h1>
             </div>
             <div class="head-right col-xs-1">
-                <a href="/signup">
+                <a href="/logout">
                     <div class="logout-button btn btn-success">Log out</div>
                 </a>
             </div>
@@ -216,10 +216,6 @@
                 // On fail
                 
                 displayError("Message goes here");
-            });
-
-            $logout.on("click", function() {
-                    window.location.href = "/logout";
             });
 
             resizeStuff();
