@@ -224,7 +224,7 @@
 
         function submitLogIn(name, room) {
             var building = window.location.pathname.split('/')[1];
-            $.ajax("/" + building + "/add_user_to_building", {
+            $.ajax("/" + building + "/api/add_user_to_building", {
                 type: "POST",
                 data: {name: name, room: room},
                 success: function(res) {
