@@ -237,40 +237,6 @@ async function isAdmin(request: express.Request, response: express.Response, nex
 ///
 let apiRouter = express.Router();
 
-apiRouter.route("/add_resident").post(isAdmin, postParser, async (request, response) => {
-    let building = response.locals.building as IBuilding;
-    let {name, room, photoURL, publicKey}: {
-        name: string | undefined;
-        room: string | undefined;
-        photoURL: string | undefined;
-        publicKey: string | undefined
-    } = request.body;
-    if (!name || !room || !photoURL || !publicKey) {
-        response.status(400).json({
-            "error": "Missing resident's name, room, photo URL, or public key"
-        });
-        return;
-    }
-    try {
-        await new User({
-            name,
-            buildingSlug: building.nameSlug,
-            room,
-            photoURL,
-            publicKey
-        }).save();
-        response.json({
-            "success": true
-        });
-    }
-    catch (err) {
-        console.error(err);
-        response.status(500).json({
-            "error": "An error occurred while adding resident"
-        });
-    }
-});
-
 apiRouter.route("/add_user_to_building").post(isAdmin, postParser, async (request, response) => {
     let building = response.locals.building as IBuildingMongoose;
     let {name, room}: {
