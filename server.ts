@@ -383,7 +383,62 @@ app.route("/signup").get(async (request, response) => {
     let signupTemplate = Handlebars.compile(await readFileAsync(path.resolve(__dirname, "client/signup.html")));
     response.send(signupTemplate({}));
 }).post(postParser, async (request, response) => {
+    // Create a new building + admin account
+    let {building, description, password, pictureURL, address, latitude, longitude}: {
+        building: string | undefined;
+        description: string | undefined;
+        password: string | undefined;
+        pictureURL: string | undefined;
+        address: string | undefined;
+        latitude: string | undefined;
+        longitude: string | undefined;
+    } = request.body;
+    if (!building || !description || !password || !pictureURL || !address || !latitude || !longitude) {
+        response.status(400).json({
+            "error": "Missing building, description, password, picture URL, latitude, or longitude"
+        });
+        return;
+    }
 
+    let privateKey: Buffer = crypto.randomBytes(32);
+    let publicKey: Buffer = secp256k1.publicKeyCreate(privateKey, true);
+    let salt = crypto.randomBytes(32);
+    let hash = await getHashForPassword(password, salt);
+    try {
+        await new Building({
+            name: building,
+            nameSlug: slug(building).toLowerCase(),
+            description: description,
+            pictureURL: pictureURL,
+            location: {
+                address: address,
+                latitude: parseFloat(latitude),
+                longitude: parseFloat(longitude)
+            },
+
+            access: {
+                residents: [],
+                guests: []
+            },
+
+            privateKey: privateKey.toString("hex"),
+            publicKey: publicKey.toString("hex"),
+            adminAccount: {
+                hash: hash.toString("hex"),
+                salt: salt.toString("hex"),
+                sessionKeys: []
+            }
+        }).save();
+        response.json({
+            "success": true
+        });
+    }
+    catch (err) {
+        console.error(err);
+        response.status(500).json({
+            "error": "An error occurred while saving the new building and associated admin account"
+        });
+    }
 });
 app.route("/upload").post(postParser, async (request, response) => {
     let {name, pictureURL, publicKey, signature}: {
