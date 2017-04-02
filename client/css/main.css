@@ -2,6 +2,10 @@ img {
     max-height: 75px;
 }
 
+body {
+    word-wrap: break-word;
+}
+
 .header {
     padding-top: 30px;
     width: 90%;
@@ -94,11 +98,4 @@ img {
 
 .deny-button {
     width: 80px;
-}
-
-.bottom-image {
-    position: fixed;
-    top 30vh;
-    width:110vh;
-    height:55vh;
 }
