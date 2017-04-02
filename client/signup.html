@@ -107,7 +107,7 @@
                 data: {building: username, description: desc, password:pwd, pictureURL: image,
                     address: address, latitude: lat, longitude: long},
                 success: function(res) {
-                    console.log(res);
+                    window.location.href = "/login";
                 },
                 error: function(res) {
                     console.log(res);
@@ -115,17 +115,10 @@
                     displayError(JSON.parse(res.responseText).error);
                 }
             });
-
-            var success = true;
-
-            if (success) {
-                //window.location.href = "/dashboard";
-            } else {
-                displayError();
-            }
         }
 
         function displayError() {
+            //$error.text(message);
             $error.slideDown();
             setTimeout(function () {
                 $error.slideUp();
