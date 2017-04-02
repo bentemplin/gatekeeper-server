@@ -26,7 +26,7 @@
     <div class="container">
         <div class="form-horizontal">
             <div class="form-group">
-                <label class="control-label col-xs-2" for="username">Username:</label>
+                <label class="control-label col-xs-2" for="username">Building name:</label>
                 <div class="col-xs-10">
                     <input type="input" class="form-control" id="username" placeholder="Enter username">
                 </div>
@@ -69,21 +69,21 @@
         });
 
         function submitLogIn(username, pwd) {
-
-            $.ajax("", {
-
+            $.ajax("/login", {
+                type: "POST",
+                data: {building: username, password:pwd},
+                success: function(res) {
+                    window.location.href = res.redirect;
+                },
+                error: function(res) {
+                    console.log(JSON.parse(res.responseText).error);
+                    displayError(JSON.parse(res.responseText).error);
+                }
             });
-
-            var success = true;
-
-            if (success) {
-                window.location.href = "/dashboard";
-            } else {
-                displayError();
-            }
         }
 
-        function displayError() {
+        function displayError(message) {
+            $error.text(message)
             $error.slideDown();
             setTimeout(function () {
                 $error.slideUp();
