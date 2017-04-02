@@ -494,6 +494,17 @@ app.route("/upload").post(postParser, async (request, response) => {
         });
     }
 });
+app.route("/buildings").get(async (request, response) => {
+    response.json((await Building.find()).map(building => {
+        return {
+            name: building.name,
+            nameSlug: building.nameSlug,
+            description: building.description,
+            pictureURL: building.pictureURL,
+            location: building.location
+        };
+    }));
+});
 
 mainRouter.route("/").get(isAdmin, async (request, response) => {
     let building = response.locals.building as IBuilding;
