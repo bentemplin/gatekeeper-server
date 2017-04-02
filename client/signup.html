@@ -41,6 +41,12 @@
             </div>
             <div class="form-group">
                 <h4>Building Location:</h4>
+                <label class="control-label col-xs-2" for="address">Address:</label>
+                <div class="col-xs-10">
+                    <input type="input" class="form-control" id="address" placeholder="Enter address">
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="control-label col-xs-2" for="lat">Latitude:</label>
                 <div class="col-xs-4">
                     <input type="input" class="form-control" id="lat" placeholder="Enter latitude">
@@ -65,7 +71,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <script>
-        var $userField, $passField, $image, $description, $lat, $long;
+        var $userField, $passField, $image, $description, $add, $lat, $long;
         var $button;
         var $error;
 
@@ -74,6 +80,7 @@
             $passField = $("#pwd");
             $image = $("#img");
             $description = $("#comment");
+            $add = $("#address");
             $lat = $("#lat");
             $long = $("#long");
             $button = $(".btn");
@@ -84,18 +91,29 @@
                 console.log($passField.val());
                 console.log($image.val());
                 console.log($description.val());
+                console.log($add.val());
                 console.log($lat.val());
                 console.log($long.val());
 
-                submitLogIn($userField.val(), $passField.val(), $image.val(),
-                    $description.val(), $lat.val(), $long.val());
+                submitLogIn($userField.val(), $description.val(), $passField.val(), 
+                    $image.val(), $add.val(), $lat.val(), $long.val());
             });
         });
 
-        function submitLogIn(username, pwd) {
+        function submitLogIn(username, desc, pwd, image, address, lat, long) {
 
-            $.ajax("", {
-
+            $.ajax("/signup", {
+                type: "POST",
+                data: {building: username, description: desc, password:pwd, pictureURL: image,
+                    address: address, latitude: lat, longitude: long},
+                success: function(res) {
+                    console.log(res);
+                },
+                error: function(res) {
+                    console.log(res);
+                    console.log(JSON.parse(res.responseText).error);
+                    displayError(JSON.parse(res.responseText).error);
+                }
             });
 
             var success = true;

@@ -76,7 +76,6 @@
                     window.location.href = res.redirect;
                 },
                 error: function(res) {
-                    console.log(JSON.parse(res.responseText).error);
                     displayError(JSON.parse(res.responseText).error);
                 }
             });
