@@ -436,7 +436,7 @@ app.route("/upload").post(postParser, async (request, response) => {
         return;
     }
     let signatureParsed = secp256k1.signatureImport(new Buffer(signature, "hex"));
-    let signatureValid = secp256k1.verify(crypto.createHash("sha256").update(name + pictureURL + publicKey).digest(), signatureParsed, new Buffer(publicKey, "hex"));
+    let signatureValid = secp256k1.verify(crypto.createHash("sha256").update(new Buffer(name + pictureURL + publicKey, "utf8")).digest(), signatureParsed, new Buffer(publicKey, "hex"));
     if (!signatureValid) {
         response.json({
             "error": "Invalid signature"
