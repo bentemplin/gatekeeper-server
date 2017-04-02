@@ -513,11 +513,12 @@ app.route("/buildings").get(async (request, response) => {
 mainRouter.route("/").get(isAdmin, async (request, response) => {
     let building = response.locals.building as IBuilding;
     let dashboardTemplate = Handlebars.compile(await readFileAsync(path.resolve(__dirname, "client/dashboard.html")));
-    response.send(dashboardTemplate({
+    let data = {
         name: building.name,
         residents: await User.find({ "buildingSlug": building.nameSlug }),
         requests: await Promise.all(building.access.guests.map(data => User.findById(data.id)))
-    }));
+    };
+    response.send(dashboardTemplate(data));
 });
 
 mainRouter.use("/api", apiRouter);
