@@ -185,9 +185,9 @@
                 console.log($name.val());
                 console.log($room.val());
 
-                //location.reload();
+                submitLogIn($name.val());
+                submitLogIn($room.val());
 
-                // RYAN: add a new tennant here
             });
 
             $('.grant-button').on("click", function() {
@@ -221,6 +221,19 @@
             resizeStuff();
 
         });
+
+        function submitLogIn(name, room) {
+            $.ajax("/add_user_to_building", {
+                type: "POST",
+                data: {name: name, room:room},
+                success: function(res) {
+                    location.reload();
+                },
+                error: function(res) {
+                    displayError(JSON.parse(res.responseText).error);
+                }
+            });
+        }
 
         function resizeStuff() {
             $logout.css("margin-top", ($header.height() / 2 - $logout.height() / 2) + "px");
