@@ -185,8 +185,7 @@
                 console.log($name.val());
                 console.log($room.val());
 
-                submitLogIn($name.val());
-                submitLogIn($room.val());
+                submitLogIn($name.val(), $room.val());
 
             });
 
@@ -222,11 +221,11 @@
 
         });
 
-        function submitLogIn(name, room) {
+        function submitLogIn(name, ro) {
             var building = window.location.pathname.split('/')[1];
             $.ajax("/" + building + "/api/add_user_to_building", {
                 type: "POST",
-                data: {name: name, room: room},
+                data: {name: name, room: ro},
                 success: function(res) {
                     location.reload();
                 },
