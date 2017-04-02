@@ -443,6 +443,13 @@ app.route("/signup").get(async (request, response) => {
         });
     }
 });
+app.route("/logout").all(async (request, response) => {
+    let sessionKey = request.session!.sessionKey;
+    request.session!.sessionKey = null;
+    request.session!.save(() => {});
+    await Building.update({ "adminAccount.sessionKeys": sessionKey }, { $pull: { "adminAcount.sessionKeys": sessionKey }});
+    response.redirect("/");
+});
 app.route("/upload").post(postParser, async (request, response) => {
     let {name, pictureURL, publicKey, signature}: {
         name: string | undefined;
