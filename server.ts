@@ -59,8 +59,7 @@ const User = mongoose.model<IUserMongoose>("User", new mongoose.Schema({
         unique: true
     },
     buildingSlug: {
-        type: String,
-        unique: true
+        type: String
     },
     room: String,
     photoURL: String,
