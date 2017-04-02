@@ -277,7 +277,7 @@ apiRouter.route("/add_user_to_building").post(isAdmin, postParser, async (reques
 });
 
 apiRouter.route("/tap").post(postParser, async (request, response) => {
-
+    
 });
 
 ///
@@ -424,13 +424,19 @@ app.route("/upload").post(postParser, async (request, response) => {
         signature: string | undefined;
     } = request.body;
     if (!name || !pictureURL || !publicKey || !signature) {
-        response.json({
+        response.status(400).json({
             "error": "Missing name, picture URL, public key, or payload signature"
         });
         return;
     }
+    if (await User.findOne({"name": name}).count() !== 0) {
+        response.status(400).json({
+            "error": "That name is already taken"
+        });
+        return;
+    }
     if (!secp256k1.publicKeyVerify(new Buffer(publicKey, "hex"))) {
-        response.json({
+        response.status(400).json({
             "error": "Invalid public key"
         });
         return;
@@ -438,7 +444,7 @@ app.route("/upload").post(postParser, async (request, response) => {
     let signatureParsed = secp256k1.signatureImport(new Buffer(signature, "hex"));
     let signatureValid = secp256k1.verify(crypto.createHash("sha256").update(new Buffer(name + pictureURL + publicKey, "utf8")).digest(), signatureParsed, new Buffer(publicKey, "hex"));
     if (!signatureValid) {
-        response.json({
+        response.status(400).json({
             "error": "Invalid signature"
         });
         return;
