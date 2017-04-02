@@ -236,7 +236,7 @@ async function isAdmin(request: express.Request, response: express.Response, nex
 ///
 let apiRouter = express.Router();
 
-apiRouter.route("/add_resident").post(/*isAdmin, */postParser, async (request, response) => {
+apiRouter.route("/add_resident").post(isAdmin, postParser, async (request, response) => {
     let building = response.locals.building as IBuilding;
     let {name, room, photoURL, publicKey}: {
         name: string | undefined;
@@ -270,7 +270,7 @@ apiRouter.route("/add_resident").post(/*isAdmin, */postParser, async (request, r
     }
 });
 
-apiRouter.route("/add_user_to_building").post(/*isAdmin,*/ postParser, async (request, response) => {
+apiRouter.route("/add_user_to_building").post(isAdmin, postParser, async (request, response) => {
     let building = response.locals.building as IBuildingMongoose;
     let {name, room}: {
         name: string | undefined;
@@ -485,7 +485,7 @@ app.route("/upload").post(postParser, async (request, response) => {
     }
 });
 
-mainRouter.route("/").get(/*isAdmin, */async (request, response) => {
+mainRouter.route("/").get(isAdmin, async (request, response) => {
     let building = response.locals.building as IBuilding;
     let dashboardTemplate = Handlebars.compile(await readFileAsync(path.resolve(__dirname, "client/dashboard.html")));
     response.send(dashboardTemplate({
